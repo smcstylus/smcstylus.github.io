@@ -1,199 +1,209 @@
-(function () {
-  "use strict";
+(function ($) {
+  const removeHash = () => {
+    var noHashURL = window.location.href.replace(/#.*$/, "");
+    window.history.replaceState("", document.title, noHashURL);
+  };
 
-  const select = (el, all = false) => {
-    el = el.trim();
-    if (all) {
-      return [...document.querySelectorAll(el)];
+  const scrollToEl = (el) => {
+    if ($(el).length) {
+      window.scrollTo({
+        top: $(el).offset()["top"] - $("#header").outerHeight(),
+        behavior: "smooth",
+      });
+      if (window.location.hash) {
+        removeHash();
+      }
     } else {
-      return document.querySelector(el);
+      removeHash();
     }
   };
 
-  const on = (type, el, listener, all = false) => {
-    let selectEl = select(el, all);
-    if (selectEl) {
-      if (all) {
-        selectEl.forEach((e) => e.addEventListener(type, listener));
+  /**
+   * Sticky Header
+   */
+  $(".js-sticky-header").sticky({ topSpacing: 0 });
+
+  /**
+   * Main Menu
+   */
+  var initMainMenu = function () {
+    // Clone for mobile
+    $(".js-clone-nav").each(function () {
+      $(this)
+        .clone()
+        .attr("class", "site-nav-wrap")
+        .appendTo(".site-mobile-menu-body");
+    });
+
+    // Add collapsible menu
+    setTimeout(function () {
+      let counter = 0;
+      $(".site-mobile-menu .has-children").each(function () {
+        let el = $(this);
+        el.prepend('<span class="arrow-collapse collapsed" >');
+        el.find(".arrow-collapse").attr({
+          "data-bs-toggle": "collapse",
+          "data-bs-target": "#collapseItem-" + counter,
+        });
+
+        el.find("> ul").attr({
+          class: "collapse",
+          id: "collapseItem-" + counter,
+        });
+
+        counter++;
+      });
+    }, 1000);
+
+    const removeCanvas = () => {
+      $("body").removeClass("offcanvas-menu");
+      $("#header").removeClass("blur");
+      $("#hero").removeClass("blur");
+      $("#main").removeClass("blur");
+    };
+    //
+    $(".arrow-collapse").on("click", function (e) {
+      let el = $(this);
+      if (el.closest("li").find(".collapse").hasClass("show")) {
+        el.removeClass("active");
       } else {
-        selectEl.addEventListener(type, listener);
+        el.addClass("active");
+      }
+      e.preventDefault();
+    });
+
+    // Show/hide mobile menu on responsive
+    $(window).resize(function () {
+      if ($(this).width() > 768) {
+        if ($("body").hasClass("offcanvas-menu")) {
+          removeCanvas();
+        }
+      }
+    });
+
+    // Toggle mobile menu
+    $(".js-menu-toggle").on("click", function (e) {
+      let el = $(this);
+      e.preventDefault();
+
+      if ($("body").hasClass("offcanvas-menu")) {
+        removeCanvas();
+        el.removeClass("active");
+      } else {
+        $("body").addClass("offcanvas-menu");
+        $("#header").addClass("blur");
+        $("#hero").addClass("blur");
+        $("#main").addClass("blur");
+        el.addClass("active");
+      }
+    });
+
+    // Close mobile menu when click outisde offcanvas
+    $(document).mouseup(function (e) {
+      let container = $(".site-mobile-menu");
+      if (!container.is(e.target) && container.has(e.target).length === 0) {
+        if ($("body").hasClass("offcanvas-menu")) {
+          removeCanvas();
+        }
+      }
+    });
+    let navbarlinks = $("#main-nav .scrollto");
+    const navbarlinksActive = () => {
+      let position = window.scrollY + 74;
+      navbarlinks.each(function (index) {
+        let hs = this.hash;
+        let section = $(hs);
+        if (!section) return;
+        if (
+          position >= section.offset()["top"] &&
+          position <= section.offset()["top"] + section.outerHeight()
+        ) {
+          $(this).addClass("active");
+        } else {
+          $(this).removeClass("active");
+        }
+      });
+    };
+    window.addEventListener("load", navbarlinksActive);
+    $(document).scroll(navbarlinksActive);
+  };
+  initMainMenu();
+
+  $(".scrollto").on("click", function (e) {
+    if (this.hash) {
+      e.preventDefault();
+      if ($("body").hasClass("offcanvas-menu")) {
+        setTimeout(function () {
+          $("#site-mobile-menu-close").trigger("click");
+        }, 300);
+      }
+      scrollToEl(this.hash);
+    }
+  });
+
+  window.addEventListener("load", () => {
+    if (window.location.hash) {
+      if ($(window.location.hash)) {
+        scrollToEl(window.location.hash);
       }
     }
-  };
+  });
+  // Load animations
+  window.addEventListener("load", () => {
+    AOS.init({
+      duration: 1000,
+      easing: "ease-in-out",
+      once: true,
+      mirror: false,
+    });
+  });
 
-  const onscroll = (el, listener) => {
-    el.addEventListener("scroll", listener);
-  };
-
-  const documentReady = (fn) => {
-    if (document.readyState !== "loading") {
-      fn();
+  // Lights
+  $(".switch").on("click", function () {
+    if ($("body").hasClass("light")) {
+      $("body").removeClass("light");
+      $(".switch").removeClass("switched");
     } else {
-      document.addEventListener("DOMContentLoaded", fn);
+      $("body").addClass("light");
+      $(".switch").addClass("switched");
     }
-  };
+  });
 
+  // Scroll to top
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
       behavior: "smooth",
     });
   };
+  let progressPath = document.querySelector(".progress-wrap path");
+  let pathLength = progressPath.getTotalLength();
+  progressPath.style.transition = progressPath.style.WebkitTransition = "none";
+  progressPath.style.strokeDasharray = pathLength + " " + pathLength;
+  progressPath.style.strokeDashoffset = pathLength;
+  progressPath.getBoundingClientRect();
+  progressPath.style.transition = progressPath.style.WebkitTransition =
+    "stroke-dashoffset 10ms linear";
+  const updateProgress = () => {
+    let scroll = window.scrollY;
+    let height =
+      document.documentElement.scrollHeight -
+      document.documentElement.clientHeight;
+    let progress = pathLength - (scroll * pathLength) / height;
+    progressPath.style.strokeDashoffset = progress;
+  };
+  updateProgress();
+  window.addEventListener("load", updateProgress);
+  $(document).scroll(updateProgress);
 
-  documentReady(function () {
-    "use strict";
-    on("click", ".switch", function () {
-      if (select("body").classList.contains("light")) {
-        select("body").classList.remove("light");
-        select(".switch").classList.remove("switched");
-      } else {
-        select("body").classList.add("light");
-        select(".switch").classList.add("switched");
-      }
-    });
-
-    var progressPath = document.querySelector(".progress-wrap path");
-    var pathLength = progressPath.getTotalLength();
-    progressPath.style.transition = progressPath.style.WebkitTransition =
-      "none";
-    progressPath.style.strokeDasharray = pathLength + " " + pathLength;
-    progressPath.style.strokeDashoffset = pathLength;
-    progressPath.getBoundingClientRect();
-    progressPath.style.transition = progressPath.style.WebkitTransition =
-      "stroke-dashoffset 10ms linear";
-    const updateProgress = () => {
-      var scroll = window.scrollY;
-      var height =
-        document.documentElement.scrollHeight -
-        document.documentElement.clientHeight;
-      var progress = pathLength - (scroll * pathLength) / height;
-      progressPath.style.strokeDashoffset = progress;
-    };
-    updateProgress();
-    window.addEventListener("load", updateProgress);
-    onscroll(document, updateProgress);
-
-    const scroolProgress = () => {
-      if (window.scrollY > 100) {
-        select(".progress-wrap").classList.add("active-progress");
-      } else {
-        select(".progress-wrap").classList.remove("active-progress");
-      }
-    };
-    window.addEventListener("load", scroolProgress);
-    onscroll(window, scroolProgress);
-    on("click", ".progress-wrap", scrollToTop);
-
-    let navbarlinks = select("#navbar .scrollto", true);
-    const navbarlinksActive = () => {
-      let position = window.scrollY + 200;
-      navbarlinks.forEach((navbarlink) => {
-        if (!navbarlink.hash) return;
-        let section = select(navbarlink.hash);
-        if (!section) return;
-        if (
-          position >= section.offsetTop &&
-          position <= section.offsetTop + section.offsetHeight
-        ) {
-          navbarlink.classList.add("active");
-        } else {
-          navbarlink.classList.remove("active");
-        }
-      });
-    };
-    window.addEventListener("load", navbarlinksActive);
-    onscroll(document, navbarlinksActive);
-
-    const scrollto = (el) => {
-      let header = select("#header");
-      let offset = header.offsetHeight;
-
-      let elementPos = select(el).offsetTop;
-      window.scrollTo({
-        top: elementPos - offset,
-        behavior: "smooth",
-      });
-    };
-
-    on("click", ".mobile-nav-toggle", function (e) {
-      select("#navbar").classList.toggle("navbar-mobile");
-      this.classList.toggle("bi-list");
-      this.classList.toggle("bi-x");
-    });
-
-    on(
-      "click",
-      ".navbar .dropdown > a",
-      function (e) {
-        if (select("#navbar").classList.contains("navbar-mobile")) {
-          e.preventDefault();
-          this.nextElementSibling.classList.toggle("dropdown-active");
-        }
-      },
-      true
-    );
-
-    on(
-      "click",
-      ".scrollto",
-      function (e) {
-        if (select(this.hash)) {
-          e.preventDefault();
-
-          let navbar = select("#navbar");
-          if (navbar.classList.contains("navbar-mobile")) {
-            navbar.classList.remove("navbar-mobile");
-            let navbarToggle = select(".mobile-nav-toggle");
-            navbarToggle.classList.toggle("bi-list");
-            navbarToggle.classList.toggle("bi-x");
-          }
-          scrollto(this.hash);
-        }
-      },
-      true
-    );
-
-    window.addEventListener("load", () => {
-      if (window.location.hash) {
-        if (select(window.location.hash)) {
-          scrollto(window.location.hash);
-        }
-      }
-    });
-
-    window.addEventListener("load", () => {
-      AOS.init({
-        duration: 1000,
-        easing: "ease-in-out",
-        once: true,
-        mirror: false,
-      });
-    });
-
-    const createRipple = (event) => {
-      const button = event.currentTarget;
-
-      const circle = document.createElement("span");
-      const diameter = Math.max(button.clientWidth, button.clientHeight);
-      const radius = diameter / 2;
-
-      circle.style.width = circle.style.height = `${diameter}px`;
-      circle.style.left = `${event.clientX - button.offsetLeft - radius}px`;
-      circle.style.top = `${event.clientY - button.offsetTop - radius}px`;
-      circle.classList.add("ripple");
-
-      const ripple = button.getElementsByClassName("ripple")[0];
-
-      if (ripple) {
-        ripple.remove();
-      }
-
-      button.appendChild(circle);
-    };
-
-    const buttons = document.getElementsByClassName("btn-ripple");
-    for (const button of buttons) {
-      button.addEventListener("mouseenter", createRipple);
+  const scroolProgress = () => {
+    if (window.scrollY > 100) {
+      $(".progress-wrap").addClass("active-progress");
+    } else {
+      $(".progress-wrap").removeClass("active-progress");
     }
-  });
-})();
+  };
+  window.addEventListener("load", scroolProgress);
+  $(window).scroll(scroolProgress);
+  $(".progress-wrap").on("click", scrollToTop);
+})(jQuery);
