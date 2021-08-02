@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
 
   <title>Mihai Calin Simion - https://smcstylus.github.io</title>
   <meta content="" name="Projects by SMCstylus.com hosted on Github">
@@ -16,7 +16,12 @@
   <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
   <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
 
-  <link href="assets/css/style.css" rel="stylesheet">
+  <link href="assets/css/general.css" rel="stylesheet">
+  <link href="assets/css/header.css" rel="stylesheet">
+  <link href="assets/css/nav.css" rel="stylesheet">
+  <link href="assets/css/hero.css" rel="stylesheet">
+  <link href="assets/css/sections.css" rel="stylesheet">
+  <link href="assets/css/footer.css" rel="stylesheet">
   <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
@@ -26,49 +31,78 @@
 <body class="light">
 
   <!-- ======= Header ======= -->
-  <header id="header" class="fixed-top d-flex align-items-center">
-    <div class="container d-flex align-items-center justify-content-between">
+  
+  <div class="site-mobile-menu site-navbar-target">
+    <div class="site-mobile-menu-header">
+      <div class="site-mobile-menu-close mt-3">
+        <span id="site-mobile-menu-close" class="bi bi-x js-menu-toggle"></span>
+      </div>
+    </div>
+    <div class="site-mobile-menu-body"></div>
+  </div>
+ 
+  
+  <header id="header"  class="site-navbar js-sticky-header site-navbar-target" role="banner">
 
-      <div class="logo">
+    <div class="container">
+      <div class="row align-items-center">
+
+      <div class="col-6 col-xl-2 logo">
         <h1 class="text-light"><a href="index.html"><span>smcstylus.github.io</span></a></h1>
       </div>
 
-      <nav id="navbar" class="navbar">
-        <ul>
-          <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
-          <li><a class="nav-link scrollto" href="#about">About</a></li>
-          <li class="dropdown"><a  class="nav-link scrollto"href="#projects"><span>Projects</span> <i class="bi bi-chevron-down"></i></a>
-            <ul>
-              <!-- <li><a href="#">HTML</a></li> -->
-              <!-- <li><a href="#">CSS</a></li> -->
-              <li class="dropdown"><a href="#projects-js"><span>JavaScript</span> <i class="bi bi-chevron-right"></i></a>
-                <ul>
-                  <li><a href="#fccJSAlgorithms">FCC JS Algorithms</a></li>
+        <div class="col-12 col-md-10 d-none d-xl-block">
+          <nav id="main-nav" class="site-navigation position-relative text-right" role="navigation">
+
+            <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
+              <li><a href="#hero" class="nav-link scrollto ">Home</a></li>
+              <li><a href="#about-section" class="nav-link scrollto">About</a></li>
+              <li class="has-children">
+                <a href="#projects-section" class="nav-link scrollto">Projects</a>
+                <ul class="dropdown">
+                  <!-- js -->
+                  <li class="has-children">
+                    <a href="#projects-js" class="nav-link scrollto">JavaScript</a>
+                    <ul class="dropdown">
+                      <li><a href="#proj-fccJSAlgorithms" class="nav-link scrollto">FCC JS Algorithms</a></li>
+                    </ul>
+                  </li>
+                  <!-- jquery -->
+                  <li class="has-children">
+                    <a href="#projects-jquery" class="nav-link scrollto">jQuery</a>
+                    <ul class="dropdown">
+                      <li><a href="#proj-smcstylusCircleTimers" class="nav-link scrollto">smcstylusCircleTimers</a></li>
+                    </ul>
+                  </li>
+                  <!-- wordpress -->
+                  <li class="has-children">
+                    <a href="#projects-wordpress" class="nav-link scrollto">WordPress</a>
+                    <ul class="dropdown">
+                      <li><a href="#proj-smcstylusAddonsForElementor" class="nav-link scrollto">SMCstylus Addons for Elementor</a></li>
+                      <li><a href="#proj-smcstylusEVCimgDownload" class="nav-link scrollto">SMCstylus EVCimg Download</a></li>
+                    </ul> 
+                  </li>
                 </ul>
               </li>
-              <!-- <li><a href="#projects-php">PHP</a></li> -->
-              <li class="dropdown"><a href="#projects-jquery"><span>jQuery</span> <i class="bi bi-chevron-right"></i></a>
-                <ul>
-                  <li><a href="#smcstylusCircleTimers">smcstylusCircleTimers</a></li>
-                </ul>
-              </li>
-              <li class="dropdown"><a href="#projects-wp"><span>WordPress</span> <i class="bi bi-chevron-right"></i></a>
-                <ul>
-                  <li><a href="#smcstylusAddonsForElementor">SMCstylus Addons for Elementor</a></li>
-                  <li><a href="#smcstylusEVCimgDownload">SMCstylus EVCimg Download</a></li> </a></li>
-                  <li><a href="#smcstylusWPADownloadHelper">SMCstylus WPA Download Helper</a></li>
-                </ul>
-              </li>
+              
+              <li><a href="#tutorials-section" class="nav-link hidden">Tutorials</a></li>
+              <li><a href="#contact-section" class="nav-link">Contact</a></li>
+              <li class="social hidden"><a href="#contact-section" class="nav-link"><span class="bx bxl-codepen"></span></a></li>
+              <li class="social hidden"><a href="#contact-section" class="nav-link"><span class="bi bi-github"></span></a></li>
+              <li class="social hidden"><a href="#contact-section" class="nav-link"><span class="bi bi-linkedin"></span></a></li>
             </ul>
-          </li>
-          <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
-        </ul>
-        <i class="bi bi-list mobile-nav-toggle"></i>
-      </nav><!-- .navbar -->
+          </nav>
+        </div>
 
+
+        <div class="col-6 d-inline-block d-xl-none ml-md-0 py-3 d-flex justify-content-end" style="position: relative; top: 3px;"><a href="#" class="site-menu-toggle js-menu-toggle float-right"><span class="bi bi-list h3"></span></a></div>
+
+      </div>
     </div>
-  </header><!-- End Header -->
-
+    
+  </header>
+  
+  
   <!-- ############# Hero Section ############# -->
   <section id="hero" class="d-flex align-items-center"  style="height: 100vh;">
 
@@ -92,7 +126,7 @@
             </a>
           </div>
           <div>
-            <a href="#projects" class="btn-get-started btn-ripple scrollto">See my projects</a>
+            <a href="#projects-section" class="btn-get-started btn-ripple scrollto">See my projects</a>
           </div>
         </div>
         <div class="col-lg-6 order-1 order-lg-2 hero-img">
@@ -107,7 +141,7 @@
   <main id="main">
 
     <!-- ############# About Section ############# -->
-    <section id="about" class="about">
+    <section id="about-section" class="about">
       <div class="container">
 
         <div class="row justify-content-between">
@@ -143,7 +177,7 @@
     <!-- ############# End About Section ############# -->
 
     <!-- ############# Projects Section ############# -->
-    <section id="projects" class="projects section-bg">
+    <section id="projects-section" class="projects section-bg">
       <div class="container" data-aos="fade-up">
 
         <div class="section-title">
@@ -157,7 +191,7 @@
         </div>
         
         <!-- start repo -->
-        <div class="row repo-start" id="fccJSAlgorithms">
+        <div class="row repo-start" id="proj-fccJSAlgorithms">
           <div class=" " data-aos="zoom-in" data-aos-delay="100">
             <div class="icon-box">
               <p class="repo-tags">
@@ -200,7 +234,7 @@
         </div>
         
         <!-- start repo -->
-        <div class="row repo-start" id="smcstylusCircleTimers">
+        <div class="row repo-start" id="proj-smcstylusCircleTimers">
           <div class=" " data-aos="zoom-in" data-aos-delay="100">
             <div class="icon-box">
               <p class="repo-tags">
@@ -239,11 +273,11 @@
         <!-- end repo -->
         
         <!-- ############# Wordpress Section ############# -->
-        <div class="section-subtitle" id="projects-wp">
+        <div class="section-subtitle" id="projects-wordpress">
           <h2>WordPress</h2>
         </div>
         <!-- start repo -->
-        <div class="row repo-start" id="smcstylusAddonsForElementor">
+        <div class="row repo-start" id="proj-smcstylusAddonsForElementor">
           <div class=" " data-aos="zoom-in" data-aos-delay="100">
             <div class="icon-box">
               <p class="repo-tags">
@@ -291,7 +325,7 @@
         <!-- end repo -->
         
         <!-- start repo -->
-        <div class="row repo-start" id="smcstylusEVCimgDownload">
+        <div class="row repo-start" id="proj-smcstylusEVCimgDownload">
           <div class=" " data-aos="zoom-in" data-aos-delay="100">
             <div class="icon-box">
               <p class="repo-tags">
@@ -360,7 +394,7 @@
     
 
     <!-- ############# Contact Section ############# -->
-    <section id="contact" class="contact">
+    <section id="contact-section" class="contact">
       <div class="container">
 
         </div>
@@ -392,15 +426,16 @@
   </footer>
   <!-- End Footer -->
 
-  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
   <div class="progress-wrap">
 		<svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
 			<path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"/>
 		</svg>
 	</div>
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js'></script>
+  
+  <script src="assets/vendor/jquery/jquery-3.3.1.min.js"></script>
+  <script src="assets/vendor/jquery/jquery.sticky.js"></script>
   <script src="assets/vendor/aos/aos.js"></script>
-  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/bootstrap/js/bootstrap.min.js"></script>
   <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
   <script src="assets/js/main.js"></script>
 
