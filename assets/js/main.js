@@ -53,6 +53,9 @@
 
         counter++;
       });
+      $(".site-mobile-menu .social").each(function () {
+        $(this).removeClass("hidden");
+      });
     }, 1000);
 
     const removeCanvas = () => {
@@ -94,6 +97,7 @@
         $("#header").addClass("blur");
         $("#hero").addClass("blur");
         $("#main").addClass("blur");
+
         el.addClass("active");
       }
     });
