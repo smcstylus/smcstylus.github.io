@@ -913,9 +913,15 @@ section {
   font-size: 18px;
 }
 
+.projects a{
+  -ms-word-wrap: break-word;
+  word-wrap: break-word;
+}
+
 .projects .title a {
   color: var(--black-blue-light-4) !important;
 }
+
 .projects  h5 {
   color: var(--black-blue-light-4) !important;
 }
